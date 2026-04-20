@@ -1,4 +1,4 @@
-/* <!doctype html>
+<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
@@ -16,7 +16,7 @@
       /* background:#161512; */
     }
     .wrap {
-      max-width:1100px;
+      max-width:100%;
     }
     .card {
       background:#fff;
@@ -25,7 +25,7 @@
     }
     .iframe-wrap {
       width:100%;
-      height:77vh;
+      height:850px;
       overflow:hidden;
       display:flex;
       justify-content:center;
@@ -51,43 +51,6 @@
         </iframe>
       </div>
     </div>
-  </div>
-</body>
-</html> */
-
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8" />
-  <style>
-    /* 1. 스크롤바와 여백을 완전히 제거 */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden; 
-      background: #161512; /* 리체스 배경색과 통일 */
-    }
-
-    /* 2. 컨테이너의 높이를 픽셀(px)로 고정 */
-    /* 보드 + FEN + PGN이 다 보이려면 보통 800px~900px이 적당합니다 */
-    .container {
-      width: 100%;
-      height: 850px; 
-      display: block;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <iframe src="https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark"></iframe>
   </div>
 </body>
 </html>
