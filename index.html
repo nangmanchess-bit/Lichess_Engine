@@ -85,15 +85,24 @@
       </div>
       <script>
     function updateBoard() {
-      const fen = document.getElementById('fenInput').value;
-      if (!fen) return;
+      const fenValue = document.getElementById('fenInput').value.trim();
+      if (!fenValue) {
+        alert("FEN을 입력해주세요!");
+        return;
+      }
 
-      // FEN의 공백을 리체스용 언더바(_)로 변환
-      const cleanFen = fen.trim().replace(/\s+/g, '_');
+      // 1. FEN의 공백을 언더바(_)로 변환
+      const cleanFen = fenValue.replace(/\s+/g, '_');
       
-      // Iframe 주소 업데이트
-      document.getElementById('chess-board').src = 
-        "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark&fen=" + cleanFen;
+      // 2. 새로운 URL 생성 (랜덤 숫자를 붙여 강제 새로고침 유도)
+      const timestamp = new Date().getTime();
+      const newUrl = "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark&fen=" + cleanFen + "&t=" + timestamp;
+
+      // 3. 기존 iframe을 직접 갈아끼우기 (가장 확실한 방법)
+      const container = document.getElementById('board-container');
+      container.innerHTML = `<iframe id="chess-board" src="${newUrl}" allowfullscreen></iframe>`;
+      
+      console.log("새 주소 적용됨:", newUrl);
     }
 
     // 엔터키 입력 시에도 적용되도록 추가
