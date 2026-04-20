@@ -23,6 +23,35 @@
       /* border-radius:12px;
       box-shadow:0 6px 18px rgba(0,0,0,0.06); */
     }
+    /* 2. 상단 입력창 영역 스타일 */
+    .input-container {
+      padding: 10px;
+      background: #262421;
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid #404040;
+    }
+    input[type="text"] {
+      flex: 1;
+      background: #3d3d3d;
+      border: 1px solid #555;
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    button {
+      background: #45a049;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3e8e41;
+    }
+    
     .iframe-wrap {
       width:100%;
       height:1200px;
@@ -43,6 +72,10 @@
 <body>
   <div class="wrap">
     <div class="card">
+      <div class="input-container">
+    <input type="text" id="fenInput" placeholder="FEN 주소를 여기에 붙여넣으세요...">
+    <button onclick="updateBoard()">포지션 변경</button>
+  </div>
       <div class="iframe-wrap">
         <iframe
           src="https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark"
@@ -51,27 +84,24 @@
         </iframe>
       </div>
       <script>
-    // 1. URL에서 FEN 파라미터를 가져오는 함수
-    function getFENFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('fen');
+    function updateBoard() {
+      const fen = document.getElementById('fenInput').value;
+      if (!fen) return;
+
+      // FEN의 공백을 리체스용 언더바(_)로 변환
+      const cleanFen = fen.trim().replace(/\s+/g, '_');
+      
+      // Iframe 주소 업데이트
+      document.getElementById('chess-board').src = 
+        "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark&fen=" + cleanFen;
     }
 
-    // 2. Iframe 주소 설정
-    const fen = getFENFromURL();
-    const iframe = document.getElementById('lichess-board');
-    
-    // 기본 주소 (기본 포지션)
-    let baseUrl = "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark";
-    
-    // FEN이 URL에 있으면 주소 뒤에 붙여줌
-    if (fen) {
-      // 리체스 임베드는 공백( ) 대신 언더바(_)를 사용해야 할 때가 있으므로 처리
-      const formattedFen = fen.replace(/ /g, '_');
-      baseUrl += "&fen=" + formattedFen;
-    }
-
-    iframe.src = baseUrl;
+    // 엔터키 입력 시에도 적용되도록 추가
+    document.getElementById('fenInput').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        updateBoard();
+      }
+    });
   </script>
 
       
