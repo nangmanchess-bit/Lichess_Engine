@@ -7,23 +7,17 @@
   <style>
     html,body {
       margin:0;
-      /* padding:0; */
       height:100%;
-      /* width:100%; */
       overflow:hidden;
-      /* font-family: system-ui, -apple-system, 'Segoe UI', Roboto; */
-      background:#fff;
-      /* background:#161512; */
+      background:#161512; /* 배경색을 리체스와 맞춰 하단 여백 가림 */
     }
     .wrap {
       max-width:100%;
     }
     .card {
-      background:#fff;
-      /* border-radius:12px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.06); */
+      background:#161512;
     }
-    /* 2. 상단 입력창 영역 스타일 */
+    /* 상단 입력창 영역 스타일 */
     .input-container {
       padding: 10px;
       background: #262421;
@@ -47,72 +41,69 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
     button:hover {
       background: #3e8e41;
     }
     
     .iframe-wrap {
       width:100%;
-      height:1200px;
-      overflow:hidden;
+      height:850px; /* 1200px은 너무 길어 하단 여백을 만드니 850px로 수정했습니다 */
       display:flex;
       justify-content:center;
     }
     .iframe-wrap iframe {
       width:100%;
       height:100%;
-      /*transform:scale(0.95);
-      transform-origin:top;*/
       border:0;
-      /* border-radius:8px; */
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
+      
       <div class="input-container">
-    <input type="text" id="fenInput" placeholder="FEN 주소를 여기에 붙여넣으세요...">
-    <button onclick="updateBoard()">포지션 변경</button>
-  </div>
-      <div class="iframe-wrap">
+        <input type="text" id="fenInput" placeholder="FEN 주소를 여기에 붙여넣으세요...">
+        <button onclick="updateBoard()">포지션 변경</button>
+      </div>
+      
+      <div class="iframe-wrap" id="board-container">
         <iframe
           src="https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark"
           loading="lazy"
           allowfullscreen>
         </iframe>
       </div>
+      
       <script>
-    function updateBoard() {
-      const fenValue = document.getElementById('fenInput').value.trim();
-      if (!fenValue) {
-        alert("FEN을 입력해주세요!");
-        return;
-      }
+        function updateBoard() {
+          const fenValue = document.getElementById('fenInput').value.trim();
+          if (!fenValue) {
+            alert("FEN을 입력해주세요!");
+            return;
+          }
 
-      // 1. FEN의 공백을 언더바(_)로 변환
-      const cleanFen = fenValue.replace(/\s+/g, '_');
-      
-      // 2. 새로운 URL 생성 (랜덤 숫자를 붙여 강제 새로고침 유도)
-      const timestamp = new Date().getTime();
-      const newUrl = "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark&fen=" + cleanFen + "&t=" + timestamp;
+          // 1. FEN의 공백을 언더바(_)로 변환
+          const cleanFen = fenValue.replace(/\s+/g, '_');
+          
+          // 2. 새로운 URL 생성 (랜덤 숫자를 붙여 강제 새로고침 유도)
+          const timestamp = new Date().getTime();
+          const newUrl = "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark&fen=" + cleanFen + "&t=" + timestamp;
 
-      // 3. 기존 iframe을 직접 갈아끼우기 (가장 확실한 방법)
-      const container = document.getElementById('board-container');
-      container.innerHTML = `<iframe id="chess-board" src="${newUrl}" allowfullscreen></iframe>`;
-      
-      console.log("새 주소 적용됨:", newUrl);
-    }
+          // 3. 기존 iframe을 직접 갈아끼우기
+          const container = document.getElementById('board-container');
+          container.innerHTML = `<iframe id="chess-board" src="${newUrl}" allowfullscreen></iframe>`;
+          
+          console.log("새 주소 적용됨:", newUrl);
+        }
 
-    // 엔터키 입력 시에도 적용되도록 추가
-    document.getElementById('fenInput').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        updateBoard();
-      }
-    });
-  </script>
-
+        // 엔터키 입력 시에도 적용되도록 추가
+        document.getElementById('fenInput').addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') {
+            updateBoard();
+          }
+        });
+      </script>
       
     </div>
   </div>
