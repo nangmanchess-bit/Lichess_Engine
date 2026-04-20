@@ -50,6 +50,31 @@
           allowfullscreen>
         </iframe>
       </div>
+      <script>
+    // 1. URL에서 FEN 파라미터를 가져오는 함수
+    function getFENFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('fen');
+    }
+
+    // 2. Iframe 주소 설정
+    const fen = getFENFromURL();
+    const iframe = document.getElementById('lichess-board');
+    
+    // 기본 주소 (기본 포지션)
+    let baseUrl = "https://lichess.org/embed/analysis?theme=grey&pieceSet=merida&bg=dark";
+    
+    // FEN이 URL에 있으면 주소 뒤에 붙여줌
+    if (fen) {
+      // 리체스 임베드는 공백( ) 대신 언더바(_)를 사용해야 할 때가 있으므로 처리
+      const formattedFen = fen.replace(/ /g, '_');
+      baseUrl += "&fen=" + formattedFen;
+    }
+
+    iframe.src = baseUrl;
+  </script>
+
+      
     </div>
   </div>
 </body>
